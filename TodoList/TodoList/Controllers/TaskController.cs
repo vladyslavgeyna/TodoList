@@ -42,16 +42,27 @@ namespace TodoList.Controllers
             var indexTaskViewModel = await _getIndexTaskViewModel();
             return View(indexTaskViewModel);
 		}
+        [HttpPost]
         public async Task<IActionResult> Create(CreateTaskViewModel createTaskViewModel)
         {
 			if (!ModelState.IsValid)
 			{
+                TempData["Message"] = new Dictionary<string, string>
+                {
+                    { "Text", "Check out entered data." },
+                    { "Class", "danger" },
+                };
                 var indexTaskViewModel = await _getIndexTaskViewModel();
                 indexTaskViewModel.CreateTaskViewModel = createTaskViewModel;
                 return View("Index", indexTaskViewModel);
 			}
             var task = _mapper.Map<Models.Task>(createTaskViewModel);
             await _taskRepository.AddAsync(task);
+            TempData["Message"] = new Dictionary<string, string>
+            {
+                { "Text", "The task was successfully added." },
+                { "Class", "success" },
+            };
 			return RedirectToAction("Index");
         }
     }

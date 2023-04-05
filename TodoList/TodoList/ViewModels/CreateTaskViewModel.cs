@@ -12,6 +12,7 @@ namespace TodoList.ViewModels
         [LessCurrentDate]
         public DateTime DueDate { get; set; }
         [Required(ErrorMessage = "The category is required. If there is no needed category you can create one.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Uncorrect category was choosen.")]
         public int CategoryId { get; set; }
     }
 }
