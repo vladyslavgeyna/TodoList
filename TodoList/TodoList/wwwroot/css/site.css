@@ -20,3 +20,14 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.border-radius-20 {
+    border-radius: 20px
+}
+
+.index-form {
+    box-shadow: 0 0 40px -5px rgba(0,0,0,0.6);
+}
+.pointer {
+    cursor: pointer;
+}

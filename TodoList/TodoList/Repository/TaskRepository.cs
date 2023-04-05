@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using TodoList.Data;
+using TodoList.Models;
 using Task = System.Threading.Tasks.Task;
 
 namespace TodoList.Repository
@@ -18,7 +19,7 @@ namespace TodoList.Repository
 			string query = "INSERT INTO [dbo].[Tasks] (Description, DueDate, DateOfCreation, CategoryId) VALUES (@Description, @DueDate, @DateOfCreation, @CategoryId)";
 			using (var connection = _context.CreateConnection())
 			{
-				task.DateOfCreation = DateTime.Now;
+                task.DateOfCreation = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 				await connection.ExecuteAsync(query, task);
 			}
 		}
@@ -34,10 +35,15 @@ namespace TodoList.Repository
 
 		public async Task<IEnumerable<Models.Task>> GetAllAsync()
 		{
-			string query = "SELECT * FROM [dbo].[Tasks]";
+			string query = "SELECT * FROM [dbo].[Tasks] LEFT JOIN [dbo].[Categories] ON [dbo].[Tasks].CategoryId = [dbo].[Categories].Id";
 			using (var connection = _context.CreateConnection())
 			{
-				var tasks = await connection.QueryAsync<Models.Task>(query);
+				var tasks = await connection.QueryAsync<Models.Task, Category, Models.Task>(query, (task, category) =>
+				{
+					task.Category = category;
+					return task;
+				},
+				splitOn: "CategoryId");
 				return tasks.ToList();
 			}
 		}

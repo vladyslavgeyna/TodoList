@@ -7,6 +7,6 @@ namespace TodoList.Models
 		[Key]
 		public int Id { get; set; }
 		public string Name { get; set; } = null!;
-		public IEnumerable<Category>? Categories { get; set; }
+		public ICollection<Task> Tasks { get; set; } = new List<Task>();
 	}
 }

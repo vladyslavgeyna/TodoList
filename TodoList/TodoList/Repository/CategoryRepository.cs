@@ -34,11 +34,22 @@ namespace TodoList.Repository
 
 		public async Task<IEnumerable<Category>> GetAllAsync()
 		{
-			string query = "SELECT * FROM [dbo].[Categories]";
+			string query = "SELECT * FROM [dbo].[Categories] LEFT JOIN [dbo].[Tasks] ON [dbo].[Categories].Id = [dbo].[Tasks].CategoryId";
 			using (var connection = _context.CreateConnection())
 			{
-				var categories = await connection.QueryAsync<Category>(query);
-				return categories.ToList();
+				var categoryDick = new Dictionary<int, Category>();
+				var categories = await connection.QueryAsync<Category, Models.Task, Category>(query, (category, task) =>
+				{
+					if (!categoryDick.TryGetValue(category.Id, out var currentCategory))
+					{
+						currentCategory = category;
+						categoryDick.Add(currentCategory.Id, currentCategory);
+					}
+					currentCategory.Tasks.Add(task);
+					return currentCategory;
+				},
+				splitOn: "Id");
+				return categories.Distinct().ToList();
 			}
 		}
 
