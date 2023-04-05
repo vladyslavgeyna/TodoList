@@ -9,7 +9,7 @@ namespace TodoList.ViewModels
         [Required(ErrorMessage = "The description is required")]
         public string Description { get; set; } = null!;
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}")]
-        [LessDate]
+        [LessCurrentDate]
         public DateTime DueDate { get; set; }
         [Required(ErrorMessage = "The category is required. If there is no needed category you can create one.")]
         public int CategoryId { get; set; }

@@ -2,9 +2,9 @@
 
 namespace TodoList.Attributes
 {
-    public class LessDateAttribute : ValidationAttribute
+    public class LessCurrentDateAttribute : ValidationAttribute
     {
-        public LessDateAttribute() : base("Date can not be less or equals than current date")
+        public LessCurrentDateAttribute() : base("Date can not be less or equals than current date")
         {
 
         }

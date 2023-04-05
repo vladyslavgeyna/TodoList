@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using TodoList.Models;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using TodoList.Repository;
 using TodoList.ViewModels;
 
@@ -9,11 +9,15 @@ namespace TodoList.Controllers
 	{
 		private readonly ITaskRepository _taskRepository;
 		private readonly ICategoryRepository _categoryRepository;
+        private readonly IMapper _mapper;
 
-		public TaskController(ITaskRepository taskRepository, ICategoryRepository categoryRepository)
+        public TaskController(ITaskRepository taskRepository, 
+            ICategoryRepository categoryRepository,
+            IMapper mapper)
 		{
 			_taskRepository = taskRepository;
 			_categoryRepository = categoryRepository;
+            _mapper = mapper;
 		}
 
 		private async Task<IndexTaskViewModel> _getIndexTaskViewModel()
@@ -46,13 +50,8 @@ namespace TodoList.Controllers
                 indexTaskViewModel.CreateTaskViewModel = createTaskViewModel;
                 return View("Index", indexTaskViewModel);
 			}
-			var task = new Models.Task
-            {
-                Description = createTaskViewModel.Description,
-                DueDate = createTaskViewModel.DueDate,
-				CategoryId = createTaskViewModel.CategoryId
-            };
-			await _taskRepository.AddAsync(task);
+            var task = _mapper.Map<Models.Task>(createTaskViewModel);
+            await _taskRepository.AddAsync(task);
 			return RedirectToAction("Index");
         }
     }
