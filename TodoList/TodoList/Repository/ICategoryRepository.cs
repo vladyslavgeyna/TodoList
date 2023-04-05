@@ -9,6 +9,6 @@ namespace TodoList.Repository
 		Task<Category> GetByIdAsync(int id);
 		Task AddAsync(Category category);
 		Task DeleteByIdAsync(int id);
-		Task UpdateByIdAsync(int id);
+		Task UpdateByIdAsync(int id, Category newCategory);
 	}
 }

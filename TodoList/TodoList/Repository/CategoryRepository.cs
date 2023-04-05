@@ -14,14 +14,22 @@ namespace TodoList.Repository
 			_context = context;
 		}
 
-		public Task AddAsync(Category category)
+		public async Task AddAsync(Category category)
 		{
-			throw new NotImplementedException();
+			string query = "INSERT INTO [dbo].[Categories] (Name) VALUES (@Name)";
+			using (var connection = _context.CreateConnection())
+			{
+				await connection.ExecuteAsync(query, category);
+			}
 		}
 
-		public Task DeleteByIdAsync(int id)
+		public async Task DeleteByIdAsync(int id)
 		{
-			throw new NotImplementedException();
+			string query = "DELETE FROM [dbo].[Categories] WHERE Id = @Id";
+			using (var connection = _context.CreateConnection())
+			{
+				await connection.ExecuteAsync(query, new { Id = id });
+			}
 		}
 
 		public async Task<IEnumerable<Category>> GetAllAsync()
@@ -34,14 +42,27 @@ namespace TodoList.Repository
 			}
 		}
 
-		public Task<Category> GetByIdAsync(int id)
+		public async Task<Category> GetByIdAsync(int id)
 		{
-			throw new NotImplementedException();
+			string query = "SELECT * FROM [dbo].[Categories] WHERE Id = @Id";
+			using (var connection = _context.CreateConnection())
+			{
+				var category = await connection.QueryFirstOrDefaultAsync<Category>(query, new { Id = id });
+				return category;
+			}
 		}
 
-		public Task UpdateByIdAsync(int id)
+		public async Task UpdateByIdAsync(int id, Category newCategory)
 		{
-			throw new NotImplementedException();
+			string query = "UPDATE [dbo].[Categories] SET Name = @Name WHERE Id = @Id";
+			using (var connection = _context.CreateConnection())
+			{
+				await connection.ExecuteAsync(query, new 
+				{
+					Id = id,
+					newCategory.Name
+				});
+			}
 		}
 	}
 }

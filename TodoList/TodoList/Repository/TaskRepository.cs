@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using TodoList.Data;
+using Task = System.Threading.Tasks.Task;
 
 namespace TodoList.Repository
 {
@@ -56,7 +57,14 @@ namespace TodoList.Repository
 			string query = "UPDATE [dbo].[Tasks] SET Description = @Description, DueDate = @DueDate, IsCompleted = @IsCompleted, CategoryId = @CategoryId WHERE Id = @Id";
 			using (var connection = _context.CreateConnection())
 			{
-				await connection.ExecuteAsync(query, newTask);
+				await connection.ExecuteAsync(query, new 
+				{
+					Id = id,
+					newTask.Description,
+					newTask.DueDate,
+					newTask.IsCompleted,
+					newTask.CategoryId
+				});
 			}
 		}
 	}
