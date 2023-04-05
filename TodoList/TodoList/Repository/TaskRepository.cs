@@ -12,14 +12,23 @@ namespace TodoList.Repository
 			_context = context;
 		}
 
-        public Task AddAsync(Models.Task task)
+        public async Task AddAsync(Models.Task task)
 		{
-			throw new NotImplementedException();
+			string query = "INSERT INTO [dbo].[Tasks] (Description, DueDate, DateOfCreation, CategoryId) VALUES (@Description, @DueDate, @DateOfCreation, @CategoryId)";
+			using (var connection = _context.CreateConnection())
+			{
+				task.DateOfCreation = DateTime.Now;
+				await connection.ExecuteAsync(query, task);
+			}
 		}
 
-		public Task DeleteByIdAsync(int id)
+		public async Task DeleteByIdAsync(int id)
 		{
-			throw new NotImplementedException();
+			string query = "DELETE FROM [dbo].[Tasks] WHERE Id = @Id";
+			using (var connection = _context.CreateConnection())
+			{
+				await connection.ExecuteAsync(query, new { Id = id });
+			}
 		}
 
 		public async Task<IEnumerable<Models.Task>> GetAllAsync()
@@ -32,14 +41,23 @@ namespace TodoList.Repository
 			}
 		}
 
-		public Task<Models.Task> GetByIdAsync(int id)
+		public async Task<Models.Task> GetByIdAsync(int id)
 		{
-			throw new NotImplementedException();
+			string query = "SELECT * FROM [dbo].[Tasks] WHERE Id = @Id";
+			using (var connection = _context.CreateConnection())
+			{
+				var task = await connection.QueryFirstOrDefaultAsync<Models.Task>(query, new { Id = id });
+				return task;
+			}
 		}
 
-		public Task UpdateByIdAsync(int id)
+		public async Task UpdateByIdAsync(int id, Models.Task newTask)
 		{
-			throw new NotImplementedException();
+			string query = "UPDATE [dbo].[Tasks] SET Description = @Description, DueDate = @DueDate, IsCompleted = @IsCompleted, CategoryId = @CategoryId WHERE Id = @Id";
+			using (var connection = _context.CreateConnection())
+			{
+				await connection.ExecuteAsync(query, newTask);
+			}
 		}
 	}
 }
