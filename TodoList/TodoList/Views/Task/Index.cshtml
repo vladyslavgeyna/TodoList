@@ -16,13 +16,13 @@
             </div>
         }
     }
-    <div class="row justify-content-between align-items-center">
+    <div class="block row flex-column">
         <div class="col h-100">
-            <form method="post" asp-controller="Task" asp-action="Create" class="h-100 border-radius-20 p-3 index-form mb-5 mt-3">
+            <form method="post" asp-controller="Task" asp-action="Create" class="h-100 border-radius-20 p-3 index-form mb-3 mt-3">
                 <div class="h-100 row flex-column justify-content-center align-items-center">
                     <div class="col">
                         <div class="mb-3">
-                            <input placeholder="New task..." type="text" asp-for="CreateTaskViewModel.Description" class="form-control border-radius-20 fw-bold" id="inputTask">
+                            <input  placeholder="New task..." type="text" asp-for="CreateTaskViewModel.Description" class="form-control border-radius-20 fw-bold" id="inputTask">
                             <span asp-validation-for="CreateTaskViewModel.Description" class="text-danger fw-bold"></span>
                         </div>
                         <div class="mb-3">
@@ -59,37 +59,74 @@
             </form>
         </div>
     </div>
-    @if (!Model.Categories.Any())
-    {
-        <div class="h1">No tasks found</div>
-    }
-    else
-    {
-        <div class="h1 mb-2">Your tasks</div>
-        <div class="accordion" id="accordionPanelsStayOpenExample">
-            @foreach (var category in Model.Categories)
-            {
-                string firstRandomId = $"panelsStayOpen-heading{category.Id}", secondRandomId = $"panelsStayOpen-collapse{category.Id}";
-                <div class="accordion-item mb-1">
-                    <h2 class="accordion-header" id="@firstRandomId">
-                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="@("#" + secondRandomId)" aria-expanded="false" aria-controls="@secondRandomId">
-                            @category.Name
-                        </button>
-                    </h2>
-                    <div id="@secondRandomId" class="accordion-collapse collapse" aria-labelledby="@firstRandomId">
-                        <div class="accordion-body">
-                            <ul>
-                                @foreach (var task in category.Tasks)
-                                {
-                                    <li>@task.Description</li>
-                                }
-                            </ul>
+    <div class="block pb-3">
+        @if (!Model.Categories.Any())
+        {
+            <div class="h1 fw-bold ps-3">No tasks found</div>
+        }
+        else
+        {
+            <div class="h1 mb-2 fw-bold ps-3">Your tasks</div>
+            <div class="accordion" id="accordionPanelsStayOpenExample">
+                @foreach (var category in Model.Categories)
+                {
+                    string firstRandomId = $"panelsStayOpen-heading{category.Id}", secondRandomId = $"panelsStayOpen-collapse{category.Id}";
+                    <div class="accordion-item mb-1">
+                        <h2 class="accordion-header" id="@firstRandomId">
+                            <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="@("#" + secondRandomId)" aria-expanded="false" aria-controls="@secondRandomId">
+                                @category.Name
+                            </button>
+                        </h2>
+                        <div id="@secondRandomId" class="accordion-collapse collapse" aria-labelledby="@firstRandomId">
+                            <div class="accordion-body">
+                                <form method="post" asp-action="Delete" asp-controller="Category">
+                                    <input type="hidden" asp-for="DeleteCategoryViewModel.Id" value="@category.Id" />
+                                    <button type="submit" class="btn btn-danger mb-2 border-radius-20 fw-bold">Delete this category</button>
+                                </form>
+								<div class="row flex-column gap-2">
+                                    @foreach (var task in category.Tasks)
+                                    {
+                                        <div class="card w-100 border-radius-20">
+                                            <div class="card-body">
+											    <div class="row align-items-center justify-content-between gap-2">
+												    <div class="col d-flex align-items-center">
+                                                        <form method="post" class="isCheckedForm d-flex justify-content-center align-items-center" asp-controller="Task" asp-action="EditIsComplete" style="margin-bottom: -2px;">
+                                                            <input type="hidden" asp-for="EditIsCompletedTaskViewModel.Id" value="@task.Id" />
+                                                            <input class="isCheckedInput" type="checkbox" checked="@task.IsCompleted" asp-for="EditIsCompletedTaskViewModel.IsCompleted" />
+                                                            <button class="btn btn-primary ms-1 p-1 fw-bold" type="submit"><small>Save</small></button>
+                                                        </form>
+                                                        <h5 class="ms-2 card-text fw-bold">@task.Description</h5>
+                                                    </div>
+												    <div class="col d-flex flex-column align-items-end gap-1">
+                                                        @if (@task.DueDate <= DateTime.Now)
+                                                        {
+                                                            <small class="card-text text-danger"><strong>Due date is</strong> @task.DueDate</small>
+                                                        }
+                                                        else
+                                                        {
+                                                            <small class="card-text"><strong>Due date is</strong> @task.DueDate</small>
+                                                        }
+                                                        <small class="card-text"><strong>Created at</strong> @task.DateOfCreation</small>
+													    <div class="row">
+                                                            <div class="col ps-1 pe-1">
+                                                                <form method="post" asp-action="Delete" asp-controller="Task">
+																	<input type="hidden" asp-for="DeleteTaskViewModel.Id" value="@task.Id" />
+                                                                    <button type="submit" class="btn btn-danger border-radius-20 fw-bold">Delete</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
-    }
+                }
+            </div>
+        }
+    </div>
 </div>
-
 

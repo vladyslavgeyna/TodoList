@@ -21,6 +21,23 @@ namespace TodoList.Controllers
             _mapper = mapper;
 		}
 
+        [HttpPost]
+        public async Task<IActionResult> EditIsComplete(EditIsCompletedTaskViewModel editIsCompletedTaskViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+            var task = await _taskRepository.GetByIdAsync(editIsCompletedTaskViewModel.Id);
+            if (task is null)
+            {
+                return RedirectToAction("Index");
+            }
+            task.IsCompleted = editIsCompletedTaskViewModel.IsCompleted;
+            await _taskRepository.UpdateByIdAsync(editIsCompletedTaskViewModel.Id, task);
+            return RedirectToAction("Index");
+        }
+
         public async Task<IActionResult> Index()
 		{
             var indexTaskViewModel = await IndexTaskViewModelCreator.CreateIndexTaskViewModel(_categoryRepository, _taskRepository);
@@ -49,6 +66,18 @@ namespace TodoList.Controllers
                 { "Class", "success" },
             };
 			return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(DeleteTaskViewModel deleteTaskViewModel)
+        {
+            var task = await _taskRepository.GetByIdAsync(deleteTaskViewModel.Id);
+            if (task is null)
+            {
+                return RedirectToAction("Index");
+            }
+            await _taskRepository.DeleteByIdAsync(deleteTaskViewModel.Id);
+            return RedirectToAction("Index");
         }
     }
 }

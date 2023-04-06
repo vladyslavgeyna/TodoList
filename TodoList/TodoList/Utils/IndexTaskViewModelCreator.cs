@@ -32,6 +32,7 @@ namespace TodoList.Utils
                     Text = category.Name,
                 });
             }
+            indexTaskViewModel.Categories.ForEach(category => category.Tasks = category.Tasks.OrderBy(task => task.IsCompleted).ThenByDescending(task => task.DueDate).ToList());
             return indexTaskViewModel;
         }
     }

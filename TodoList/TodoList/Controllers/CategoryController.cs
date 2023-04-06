@@ -45,5 +45,16 @@ namespace TodoList.Controllers
             };
             return RedirectToAction("Index", "Task");
         }
+        [HttpPost]
+        public async Task<IActionResult> Delete(DeleteCategoryViewModel deleteCategoryViewModel)
+        {
+            var category = await _categoryRepository.GetByIdAsync(deleteCategoryViewModel.Id);
+            if (category is null)
+            {
+                return RedirectToAction("Index", "Task");
+            }
+            await _categoryRepository.DeleteByIdAsync(deleteCategoryViewModel.Id);
+            return RedirectToAction("Index", "Task");
+        }
     }
 }
