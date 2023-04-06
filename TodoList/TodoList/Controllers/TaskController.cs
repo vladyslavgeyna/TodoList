@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using TodoList.Repository;
+using TodoList.Utils;
 using TodoList.ViewModels;
 
 namespace TodoList.Controllers
@@ -20,28 +21,12 @@ namespace TodoList.Controllers
             _mapper = mapper;
 		}
 
-		private async Task<IndexTaskViewModel> _getIndexTaskViewModel()
-		{
-            var categories = await _categoryRepository.GetAllAsync();
-            var indexTaskViewModel = new IndexTaskViewModel
-            {
-                Categories = categories,
-            };
-            foreach (var category in categories)
-            {
-                indexTaskViewModel.CategoriesSelect.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-                {
-                    Value = category.Id.ToString(),
-                    Text = category.Name,
-                });
-            }
-            return indexTaskViewModel;
-        }
         public async Task<IActionResult> Index()
 		{
-            var indexTaskViewModel = await _getIndexTaskViewModel();
+            var indexTaskViewModel = await IndexTaskViewModelCreator.CreateIndexTaskViewModel(_categoryRepository, _taskRepository);
             return View(indexTaskViewModel);
 		}
+        
         [HttpPost]
         public async Task<IActionResult> Create(CreateTaskViewModel createTaskViewModel)
         {
@@ -52,7 +37,7 @@ namespace TodoList.Controllers
                     { "Text", "Check out entered data." },
                     { "Class", "danger" },
                 };
-                var indexTaskViewModel = await _getIndexTaskViewModel();
+                var indexTaskViewModel = await IndexTaskViewModelCreator.CreateIndexTaskViewModel(_categoryRepository, _taskRepository);
                 indexTaskViewModel.CreateTaskViewModel = createTaskViewModel;
                 return View("Index", indexTaskViewModel);
 			}

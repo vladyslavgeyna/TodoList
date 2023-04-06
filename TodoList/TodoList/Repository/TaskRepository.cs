@@ -41,6 +41,7 @@ namespace TodoList.Repository
 				var tasks = await connection.QueryAsync<Models.Task, Category, Models.Task>(query, (task, category) =>
 				{
 					task.Category = category;
+					task.CategoryId = category.Id == 0 ? null : category.Id;
 					return task;
 				},
 				splitOn: "CategoryId");
