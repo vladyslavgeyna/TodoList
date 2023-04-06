@@ -23,7 +23,7 @@ namespace TodoList.Controllers
 		private async Task<IndexTaskViewModel> _getIndexTaskViewModel()
 		{
             var categories = await _categoryRepository.GetAllAsync();
-            IndexTaskViewModel indexTaskViewModel = new IndexTaskViewModel
+            var indexTaskViewModel = new IndexTaskViewModel
             {
                 Categories = categories,
             };
