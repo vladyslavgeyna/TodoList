@@ -19,6 +19,7 @@ namespace TodoList.Utils
             {
                 var category = new Category
                 {
+                    Id = -1,
                     Name = "Without category",
                     Tasks = tasksWithoutCategory.ToList()
                 };

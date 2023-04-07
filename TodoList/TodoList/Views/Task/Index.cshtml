@@ -79,10 +79,13 @@
                         </h2>
                         <div id="@secondRandomId" class="accordion-collapse collapse" aria-labelledby="@firstRandomId">
                             <div class="accordion-body">
-                                <form method="post" asp-action="Delete" asp-controller="Category">
-                                    <input type="hidden" asp-for="DeleteCategoryViewModel.Id" value="@category.Id" />
-                                    <button type="submit" class="btn btn-danger mb-2 border-radius-20 fw-bold">Delete this category</button>
-                                </form>
+                                @if(category.Id != -1)
+                                {
+                                    <form method="post" asp-action="Delete" asp-controller="Category">
+                                        <input type="hidden" asp-for="DeleteCategoryViewModel.Id" value="@category.Id" />
+                                        <button type="submit" class="btn btn-danger mb-2 border-radius-20 fw-bold">Delete this category</button>
+                                    </form>
+                                }
 								<div class="row flex-column gap-2">
                                     @foreach (var task in category.Tasks)
                                     {
