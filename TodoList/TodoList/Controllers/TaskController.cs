@@ -7,7 +7,7 @@ using TodoList.ViewModels;
 namespace TodoList.Controllers
 {
 	public class TaskController : Controller
-	{
+    {
         private readonly ITaskRepository _taskRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
