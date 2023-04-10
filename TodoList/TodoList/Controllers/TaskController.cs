@@ -15,11 +15,11 @@ namespace TodoList.Controllers
         public TaskController(ITaskRepository taskRepository, 
             ICategoryRepository categoryRepository,
             IMapper mapper)
-		{
-			_taskRepository = taskRepository;
-			_categoryRepository = categoryRepository;
+        {
+            _taskRepository = taskRepository;
+            _categoryRepository = categoryRepository;
             _mapper = mapper;
-		}
+        }
 
         [HttpPost]
         public async Task<IActionResult> EditIsComplete(EditIsCompletedTaskViewModel editIsCompletedTaskViewModel)
@@ -39,16 +39,16 @@ namespace TodoList.Controllers
         }
 
         public async Task<IActionResult> Index()
-		{
+        {
             var indexTaskViewModel = await IndexTaskViewModelCreator.CreateIndexTaskViewModel(_categoryRepository, _taskRepository);
             return View(indexTaskViewModel);
-		}
+        }
         
         [HttpPost]
         public async Task<IActionResult> Create(CreateTaskViewModel createTaskViewModel)
         {
-			if (!ModelState.IsValid)
-			{
+            if (!ModelState.IsValid)
+            {
                 TempData["Message"] = new Dictionary<string, string>
                 {
                     { "Text", "Check out entered data." },
@@ -57,7 +57,7 @@ namespace TodoList.Controllers
                 var indexTaskViewModel = await IndexTaskViewModelCreator.CreateIndexTaskViewModel(_categoryRepository, _taskRepository);
                 indexTaskViewModel.CreateTaskViewModel = createTaskViewModel;
                 return View("Index", indexTaskViewModel);
-			}
+            }
             var task = _mapper.Map<Models.Task>(createTaskViewModel);
             await _taskRepository.AddAsync(task);
             TempData["Message"] = new Dictionary<string, string>
@@ -65,7 +65,7 @@ namespace TodoList.Controllers
                 { "Text", "The task was successfully added." },
                 { "Class", "success" },
             };
-			return RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
