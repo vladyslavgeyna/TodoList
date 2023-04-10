@@ -19,7 +19,7 @@ namespace TodoList.Repository
 			string query = "INSERT INTO [dbo].[Tasks] (Description, DueDate, DateOfCreation, CategoryId) VALUES (@Description, @DueDate, @DateOfCreation, @CategoryId)";
 			using (var connection = _context.CreateConnection())
 			{
-                task.DateOfCreation = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+				task.DateOfCreation = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 				await connection.ExecuteAsync(query, task);
 			}
 		}
