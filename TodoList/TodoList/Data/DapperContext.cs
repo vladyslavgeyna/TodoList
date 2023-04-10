@@ -6,13 +6,12 @@ namespace TodoList.Data
 {
 	public sealed class DapperContext
 	{
-		private readonly string _connectionString; 
+		private readonly string _connectionString;
 		
 		public DapperContext(IConfiguration configuration)
-        {
-	        _connectionString = configuration.GetDefaultConnectionString()
-	                            ?? throw new Exception("Cannot get connection string");
-        }
+		{
+		    _connectionString = configuration.GetDefaultConnectionString() ?? throw new Exception("Cannot get connection string");
+		}
 		
 		public IDbConnection CreateConnection()
 		{
