@@ -20,7 +20,7 @@ namespace TodoList.Repository
 			using (var connection = _context.CreateConnection())
 			{
 				task.DateOfCreation = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-				await connection.ExecuteAsync(query, task);
+                await connection.ExecuteAsync(query, task);
 			}
 		}
 

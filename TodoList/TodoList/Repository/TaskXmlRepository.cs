@@ -37,8 +37,8 @@ namespace TodoList.Repository
                 new XElement("Id", newTaskId),
                 new XElement("CategoryId", task.CategoryId),
                 new XElement("Description", task.Description),
-                new XElement("DueDate", task.DueDate.ToString()),
-                new XElement("DateOfCreation", task.DateOfCreation.ToString()),
+                new XElement("DueDate", task.DueDate.ToString("yyyy-MM-dd HH:mm:ss")),
+                new XElement("DateOfCreation", task.DateOfCreation.ToString("yyyy-MM-dd HH:mm:ss")),
                 new XElement("IsCompleted", task.IsCompleted)
             );
             _document?.Root?.Element("Tasks")?.Add(taskElement);
