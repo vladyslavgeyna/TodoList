@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting.Internal;
+using TodoList.Data;
 using TodoList.Repository;
+using TodoList.Services;
 using TodoList.Utils;
 using TodoList.ViewModels;
 
@@ -12,12 +15,13 @@ namespace TodoList.Controllers
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
 
-        public TaskController(ITaskRepository taskRepository, 
-            ICategoryRepository categoryRepository,
-            IMapper mapper)
+        public TaskController(IMapper mapper,
+            DapperContext dapperContext,
+            IHttpContextAccessor httpContextAccessor,
+            XmlStorageService xmlStorageService)
         {
-            _taskRepository = taskRepository;
-            _categoryRepository = categoryRepository;
+            _taskRepository = RepositorySetter.SetTaskRepository(httpContextAccessor, dapperContext, xmlStorageService);
+            _categoryRepository = RepositorySetter.SetCategoryRepository(httpContextAccessor, dapperContext, xmlStorageService);
             _mapper = mapper;
         }
 

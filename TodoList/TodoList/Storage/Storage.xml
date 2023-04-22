@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<TodoList>
+  <Tasks>
+    <Task>
+      <Id>729020042</Id>
+      <CategoryId>1252063214</CategoryId>
+      <Description>tasksdf</Description>
+      <DueDate>12.12.2026 12:12:00</DueDate>
+      <DateOfCreation>12.12.2026 12:12:00</DateOfCreation>
+      <IsCompleted>False</IsCompleted>
+    </Task>
+  </Tasks>
+  <Categories>
+    <Category>
+      <Id>1252063214</Id>
+      <Name>cat</Name>
+    </Category>
+  </Categories>
+</TodoList>

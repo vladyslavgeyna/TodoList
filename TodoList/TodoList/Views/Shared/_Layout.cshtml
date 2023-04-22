@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using TodoList.Enums;
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    var sessionStorageValue = httpContextAccessor?.HttpContext?.Session.GetString("Storage");
+    var changeStorageViewModel = new ChangeStorageViewModel();
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,6 +29,26 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Task" asp-action="Index">Home</a>
                         </li>
                     </ul>
+					<div>
+						<form method="post" class="d-flex align-items-center" asp-action="Change" asp-controller="Storage">
+                            <label class="form-label fw-bold p-0 m-0" asp-for="@changeStorageViewModel.StorageType">Storage:</label>
+                            <select asp-for="@changeStorageViewModel.StorageType" class="form-control border-radius-20 pointer fw-bold ms-2">
+                                @foreach (var item in Enum.GetNames(typeof(Storage)))
+                                {
+                                    @if (sessionStorageValue == item)
+                                    {
+                                        <option value="@item" selected>@item</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item">@item</option>
+                                    }
+                                }
+                            </select>
+                            <span asp-validation-for="@changeStorageViewModel.StorageType" class="text-danger fw-bold"></span>
+							<button type="submit" class="btn btn-primary border-radius-20 ms-1 fw-bold">Change</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </nav>

@@ -1,5 +1,4 @@
-﻿using TodoList.Models;
-using TodoList.Repository;
+﻿using TodoList.Repository;
 using TodoList.ViewModels;
 
 namespace TodoList.Utils
@@ -8,23 +7,14 @@ namespace TodoList.Utils
     {
         public static async Task<IndexTaskViewModel> CreateIndexTaskViewModel(ICategoryRepository categoryRepository, ITaskRepository taskRepository)
         {
-            var categories = await categoryRepository.GetAllAsync();
-            var tasks = await taskRepository.GetAllAsync();
+            var categories = (await categoryRepository.GetAllAsync()).ToList();
+            var tasks = (await taskRepository.GetAllAsync()).ToList();
+            tasks.ForEach(task => task.Category = categories.FirstOrDefault(category => category.Id == task.CategoryId));
             var indexTaskViewModel = new IndexTaskViewModel
             {
-                Categories = categories.Where(category => category.Tasks.All(task => task is not null)).ToList(),
+                Categories = categories,
+                Tasks = tasks,
             };
-            var tasksWithoutCategory = tasks.Where(task => task.CategoryId is null).ToList();
-            if (tasksWithoutCategory.Any())
-            {
-                var category = new Category
-                {
-                    Id = -1,
-                    Name = "Without category",
-                    Tasks = tasksWithoutCategory.ToList()
-                };
-                indexTaskViewModel.Categories.Add(category);
-            }
             foreach (var category in categories)
             {
                 indexTaskViewModel.CategoriesSelect.Add(new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
@@ -33,7 +23,7 @@ namespace TodoList.Utils
                     Text = category.Name,
                 });
             }
-            indexTaskViewModel.Categories.ForEach(category => category.Tasks = category.Tasks.OrderBy(task => task.IsCompleted).ThenByDescending(task => task.DueDate).ToList());
+            indexTaskViewModel.Tasks = indexTaskViewModel.Tasks.OrderBy(task => task.IsCompleted).ThenByDescending(task => task.DueDate).ToList();
             return indexTaskViewModel;
         }
     }

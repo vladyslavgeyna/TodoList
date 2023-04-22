@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using TodoList.Data;
 using TodoList.Models;
 using TodoList.Repository;
+using TodoList.Services;
 using TodoList.Utils;
 using TodoList.ViewModels;
 
@@ -13,13 +15,14 @@ namespace TodoList.Controllers
         private readonly ITaskRepository _taskRepository;
         private readonly IMapper _mapper;
 
-        public CategoryController(ICategoryRepository categoryRepository,
-            IMapper mapper,
-            ITaskRepository taskRepository)
+        public CategoryController(IMapper mapper,
+            IHttpContextAccessor httpContextAccessor,
+            XmlStorageService xmlStorageService,
+            DapperContext dapperContext)
         {
-            _categoryRepository = categoryRepository;
             _mapper = mapper;
-            _taskRepository = taskRepository;
+            _taskRepository = RepositorySetter.SetTaskRepository(httpContextAccessor, dapperContext, xmlStorageService);
+            _categoryRepository = RepositorySetter.SetCategoryRepository(httpContextAccessor, dapperContext, xmlStorageService);
         }
 
         [HttpPost]
@@ -54,6 +57,12 @@ namespace TodoList.Controllers
                 return RedirectToAction("Index", "Task");
             }
             await _categoryRepository.DeleteByIdAsync(deleteCategoryViewModel.Id);
+            var tasks = (await _taskRepository.GetAllAsync()).Where(task => task.CategoryId == category.Id);
+            foreach (var task in tasks)
+            {
+                task.CategoryId = -1;
+                await _taskRepository.UpdateByIdAsync(task.Id, task);
+            }
             return RedirectToAction("Index", "Task");
         }
     }

@@ -5,11 +5,11 @@ using Task = System.Threading.Tasks.Task;
 
 namespace TodoList.Repository
 {
-	public class TaskRepository : ITaskRepository
+	public class TaskMsSqlRepository : ITaskRepository
 	{
 		private readonly DapperContext _context;
 
-		public TaskRepository(DapperContext context)
+		public TaskMsSqlRepository(DapperContext context)
 		{
 			_context = context;
 		}
@@ -49,7 +49,7 @@ namespace TodoList.Repository
 			}
 		}
 
-		public async Task<Models.Task> GetByIdAsync(int id)
+		public async Task<Models.Task?> GetByIdAsync(int id)
 		{
 			string query = "SELECT * FROM [dbo].[Tasks] WHERE Id = @Id";
 			using (var connection = _context.CreateConnection())

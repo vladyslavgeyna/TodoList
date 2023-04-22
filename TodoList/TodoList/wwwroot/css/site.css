@@ -66,3 +66,12 @@ body {
     height: 17px;
     cursor: pointer;
 }
+.badge {
+    font-size: 0.8rem !important;
+}
+.list-group-item + .list-group-item {
+    border-top-width: 1px !important;
+}
+.tasks li {
+    border: 1px solid darkgray !important;
+}

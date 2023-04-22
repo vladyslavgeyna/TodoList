@@ -5,11 +5,11 @@ using Task = System.Threading.Tasks.Task;
 
 namespace TodoList.Repository
 {
-	public class CategoryRepository : ICategoryRepository
+	public class CategoryMsSqlRepository : ICategoryRepository
 	{
 		private readonly DapperContext _context;
 
-		public CategoryRepository(DapperContext context)
+		public CategoryMsSqlRepository(DapperContext context)
 		{
 			_context = context;
 		}
