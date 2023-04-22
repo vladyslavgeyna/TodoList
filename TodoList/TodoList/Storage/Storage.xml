@@ -3,17 +3,12 @@
   <Tasks>
     <Task>
       <Id>215473329</Id>
-      <CategoryId>1975111128</CategoryId>
+      <CategoryId>-1</CategoryId>
       <Description>Buy bread</Description>
-      <DueDate>2034-06-01 10:10:00</DueDate>
+      <DueDate>06.01.2034 10:10:00</DueDate>
       <DateOfCreation>2023-04-22 21:22:31</DateOfCreation>
-      <IsCompleted>false</IsCompleted>
+      <IsCompleted>True</IsCompleted>
     </Task>
   </Tasks>
-  <Categories>
-    <Category>
-      <Id>1975111128</Id>
-      <Name>Shop</Name>
-    </Category>
-  </Categories>
+  <Categories />
 </TodoList>

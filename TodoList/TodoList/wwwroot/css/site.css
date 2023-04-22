@@ -75,3 +75,18 @@ body {
 .tasks li {
     border: 1px solid darkgray !important;
 }
+.categories {
+
+}
+.categories li:not(:last-child) {
+    margin-bottom:10px;
+}
+.categories a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+    transition: all 0.3s ease;
+}
+    .categories a:hover {
+        color: #0b5ed7;
+    }

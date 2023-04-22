@@ -105,6 +105,28 @@
                 }
             </ul>
         }
+        @if(!Model.Categories.Any())
+        {
+            <div class="h1 fw-bold ps-3 mt-5">No categories found</div>
+        }
+        else
+        {
+            <div class="h1 fw-bold ps-3  mt-5">Your categories</div>
+            <div class="container mt-3">
+                <ul class="list-group categories border-radius-20">
+                    @foreach(var category in Model.Categories)
+                    {
+                        <li class="list-group-item border-radius-20 h5 d-flex align-items-center justify-content-between">
+							<a asp-action="Details" asp-controller="Category" asp-route-id="@category.Id">@category.Name</a>
+                            <form method="post" asp-action="Delete" asp-controller="Category">
+                                <input type="hidden" asp-for="DeleteCategoryViewModel.Id" value="@category.Id" />
+                                <button type="submit" class="btn btn-danger border-radius-20 fw-bold">Delete</button>
+                            </form>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
     </div>
 </div>
 

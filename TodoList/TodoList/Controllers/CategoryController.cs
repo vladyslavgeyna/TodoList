@@ -65,5 +65,20 @@ namespace TodoList.Controllers
             }
             return RedirectToAction("Index", "Task");
         }
+        public async Task<IActionResult> Details(int id)
+        {
+            var category = await _categoryRepository.GetByIdAsync(id);
+            if (category is null)
+            {
+                return RedirectToAction("Index", "Task");
+            }
+            var tasks = (await _taskRepository.GetAllAsync()).Where(task => task.CategoryId == id).ToList();
+            var detailsCategoryViewModel = new DetailsCategoryViewModel
+            {
+                Category = category,
+                Tasks = tasks
+            };
+            return View(detailsCategoryViewModel);
+        }
     }
 }

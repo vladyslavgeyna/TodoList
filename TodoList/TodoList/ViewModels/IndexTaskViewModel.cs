@@ -13,6 +13,5 @@ namespace TodoList.ViewModels
 		public EditIsCompletedTaskViewModel EditIsCompletedTaskViewModel { get; set; } = null!;
 		public DeleteTaskViewModel DeleteTaskViewModel { get; set; } = null!;
 		public DeleteCategoryViewModel DeleteCategoryViewModel { get; set; } = null!;
-		//public ChangeStorageViewModel ChangeStorageViewModel { get; set; } = null!;
     }
 }
