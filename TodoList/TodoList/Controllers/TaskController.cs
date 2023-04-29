@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting.Internal;
-using TodoList.Data;
-using TodoList.Repository;
-using TodoList.Services;
-using TodoList.Utils;
+using TodoList.DAL;
+using TodoList.DAL.Repository;
+using TodoList.Factory;
+using TodoList.Service;
 using TodoList.ViewModels;
 
 namespace TodoList.Controllers
@@ -20,8 +19,8 @@ namespace TodoList.Controllers
             IHttpContextAccessor httpContextAccessor,
             XmlStorageService xmlStorageService)
         {
-            _taskRepository = RepositorySetter.SetTaskRepository(httpContextAccessor, dapperContext, xmlStorageService);
-            _categoryRepository = RepositorySetter.SetCategoryRepository(httpContextAccessor, dapperContext, xmlStorageService);
+            _taskRepository = RepositoryFactory.GetTaskRepository(httpContextAccessor, dapperContext, xmlStorageService);
+            _categoryRepository = RepositoryFactory.GetCategoryRepository(httpContextAccessor, dapperContext, xmlStorageService);
             _mapper = mapper;
         }
 
@@ -44,7 +43,7 @@ namespace TodoList.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var indexTaskViewModel = await IndexTaskViewModelCreator.CreateIndexTaskViewModel(_categoryRepository, _taskRepository);
+            var indexTaskViewModel = await IndexTaskViewModelFactory.CreateIndexTaskViewModel(_categoryRepository, _taskRepository);
             return View(indexTaskViewModel);
         }
         
@@ -58,11 +57,11 @@ namespace TodoList.Controllers
                     { "Text", "Check out entered data." },
                     { "Class", "danger" },
                 };
-                var indexTaskViewModel = await IndexTaskViewModelCreator.CreateIndexTaskViewModel(_categoryRepository, _taskRepository);
+                var indexTaskViewModel = await IndexTaskViewModelFactory.CreateIndexTaskViewModel(_categoryRepository, _taskRepository);
                 indexTaskViewModel.CreateTaskViewModel = createTaskViewModel;
                 return View("Index", indexTaskViewModel);
             }
-            var task = _mapper.Map<Models.Task>(createTaskViewModel);
+            var task = _mapper.Map<Domain.Entity.Task>(createTaskViewModel);
             await _taskRepository.AddAsync(task);
             TempData["Message"] = new Dictionary<string, string>
             {

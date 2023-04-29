@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using TodoList.Data;
 using TodoList.Enums;
-using TodoList.Repository;
 
 namespace TodoList.Middlewares
 {

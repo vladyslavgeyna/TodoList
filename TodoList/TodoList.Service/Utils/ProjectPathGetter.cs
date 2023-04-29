@@ -1,4 +1,6 @@
-﻿namespace TodoList.Utils
+﻿using Microsoft.Extensions.Configuration;
+
+namespace TodoList.Service.Utils
 {
     public static class ProjectPathGetter
     {

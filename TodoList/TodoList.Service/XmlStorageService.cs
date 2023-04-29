@@ -1,6 +1,7 @@
-﻿using TodoList.Utils;
+﻿using Microsoft.Extensions.Configuration;
+using TodoList.Service.Utils;
 
-namespace TodoList.Services
+namespace TodoList.Service
 {
     public class XmlStorageService
     {

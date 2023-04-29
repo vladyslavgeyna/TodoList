@@ -1,19 +1,17 @@
 ﻿using System.Xml.Linq;
-using TodoList.Models;
-using TodoList.Services;
+using TodoList.Domain.Entity;
+using TodoList.Service;
 using Task = System.Threading.Tasks.Task;
 
-namespace TodoList.Repository
+namespace TodoList.DAL.Repository
 {
     public class CategoryXmlRepository : ICategoryRepository
     {
         private XDocument _document;
         private readonly XmlStorageService _xmlStorageService;
         private readonly string _path;
-        //private readonly ITaskRepository _taskRepository;
-        public CategoryXmlRepository(XmlStorageService xmlStorageService/*, ITaskRepository taskRepository*/)
+        public CategoryXmlRepository(XmlStorageService xmlStorageService)
         {
-            //_taskRepository = taskRepository;
             _xmlStorageService = xmlStorageService;
             string filePath = _xmlStorageService.XmlStoragePath;
             _document = XDocument.Load(filePath);
@@ -60,7 +58,7 @@ namespace TodoList.Repository
                _document.Root
                    .Element("Categories")
                    .Elements("Category")
-                   .Select(t => new Models.Category
+                   .Select(t => new Category
                    {
                        Id = (int)t.Element("Id"),
                        Name = (string)t.Element("Name"),

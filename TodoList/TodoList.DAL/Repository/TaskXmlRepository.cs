@@ -1,10 +1,9 @@
 ﻿using System.Xml.Linq;
-using TodoList.Services;
-using TodoList.Models;
-using System.Threading.Tasks;
+using TodoList.Service;
+using TodoList.Service.Utils;
 using Task = System.Threading.Tasks.Task;
 
-namespace TodoList.Repository
+namespace TodoList.DAL.Repository
 {
     public class TaskXmlRepository : ITaskRepository
     {
@@ -24,7 +23,7 @@ namespace TodoList.Repository
             return (await GetByIdAsync(id)) is not null;
         }
 
-        public async Task AddAsync(Models.Task task)
+        public async Task AddAsync(Domain.Entity.Task task)
         {
             int newTaskId;
             Random random = new();
@@ -32,13 +31,13 @@ namespace TodoList.Repository
 {
                 newTaskId = random.Next(1, int.MaxValue);
             } while (await IsTaskByIdExist(newTaskId));
-            task.DateOfCreation = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+            task.DateOfCreation = DateTime.Parse(DateTime.Now.ToString(DateTimeHelper.DatePattern));
             XElement taskElement = new XElement("Task",
                 new XElement("Id", newTaskId),
                 new XElement("CategoryId", task.CategoryId),
                 new XElement("Description", task.Description),
-                new XElement("DueDate", task.DueDate.ToString("yyyy-MM-dd HH:mm:ss")),
-                new XElement("DateOfCreation", task.DateOfCreation.ToString("yyyy-MM-dd HH:mm:ss")),
+                new XElement("DueDate", task.DueDate.ToString(DateTimeHelper.DatePattern)),
+                new XElement("DateOfCreation", task.DateOfCreation.ToString(DateTimeHelper.DatePattern)),
                 new XElement("IsCompleted", task.IsCompleted)
             );
             _document?.Root?.Element("Tasks")?.Add(taskElement);
@@ -60,13 +59,13 @@ namespace TodoList.Repository
             }
         }
 
-        public async Task<IEnumerable<Models.Task>> GetAllAsync()
+        public async Task<IEnumerable<Domain.Entity.Task>> GetAllAsync()
         {
             var tasks = await Task.Run(() =>
                _document.Root
                    .Element("Tasks")
                    .Elements("Task")
-                   .Select(t => new Models.Task
+                   .Select(t => new Domain.Entity.Task
                    {
                        Id = (int)t.Element("Id"),
                        CategoryId = (int?)t.Element("CategoryId"),
@@ -79,14 +78,14 @@ namespace TodoList.Repository
             return tasks;
         }
 
-        public async Task<Models.Task?> GetByIdAsync(int id)
+        public async Task<Domain.Entity.Task?> GetByIdAsync(int id)
         {
             return await Task.Run(() =>
                 _document?.Root
                     ?.Element("Tasks")
                     ?.Elements("Task")
                     .Where(t => (int)t.Element("Id") == id)
-                    .Select(t => new Models.Task
+                    .Select(t => new Domain.Entity.Task
                     {
                         Id = (int)t.Element("Id"),
                         CategoryId = (int)t.Element("CategoryId"),
@@ -99,7 +98,7 @@ namespace TodoList.Repository
             );
         }
 
-        public async Task UpdateByIdAsync(int id, Models.Task newTask)
+        public async Task UpdateByIdAsync(int id, Domain.Entity.Task newTask)
         {
             _document = XDocument.Load(_path);
             XElement? taskElement = _document?.Root

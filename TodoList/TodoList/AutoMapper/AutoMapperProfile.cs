@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using TodoList.Models;
+using TodoList.Domain.Entity;
 using TodoList.ViewModels;
 
 namespace TodoList.AutoMapper
@@ -8,8 +8,8 @@ namespace TodoList.AutoMapper
     {
         public AutoMapperProfile()
         {
-            CreateMap<CreateTaskViewModel, Models.Task>();
-            CreateMap<Models.Task, CreateTaskViewModel>();
+            CreateMap<CreateTaskViewModel, Domain.Entity.Task>();
+            CreateMap<Domain.Entity.Task, CreateTaskViewModel>();
             CreateMap<CreateCategoryViewModel, Category>();
             CreateMap<Category, CreateCategoryViewModel>();
         }

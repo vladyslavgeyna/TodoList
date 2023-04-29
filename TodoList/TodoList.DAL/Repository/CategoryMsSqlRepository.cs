@@ -1,9 +1,8 @@
 ﻿using Dapper;
-using TodoList.Data;
-using TodoList.Models;
+using TodoList.Domain.Entity;
 using Task = System.Threading.Tasks.Task;
 
-namespace TodoList.Repository
+namespace TodoList.DAL.Repository
 {
 	public class CategoryMsSqlRepository : ICategoryRepository
 	{
@@ -38,7 +37,7 @@ namespace TodoList.Repository
 			using (var connection = _context.CreateConnection())
 			{
 				var categoryDick = new Dictionary<int, Category>();
-				var categories = await connection.QueryAsync<Category, Models.Task, Category>(query, (category, task) =>
+				var categories = await connection.QueryAsync<Category, Domain.Entity.Task, Category>(query, (category, task) =>
 				{
 					if (!categoryDick.TryGetValue(category.Id, out var currentCategory))
 					{

@@ -1,9 +1,9 @@
-﻿using TodoList.Repository;
+﻿using TodoList.DAL.Repository;
 using TodoList.ViewModels;
 
-namespace TodoList.Utils
+namespace TodoList.Factory
 {
-    public static class IndexTaskViewModelCreator
+    public static class IndexTaskViewModelFactory
     {
         public static async Task<IndexTaskViewModel> CreateIndexTaskViewModel(ICategoryRepository categoryRepository, ITaskRepository taskRepository)
         {

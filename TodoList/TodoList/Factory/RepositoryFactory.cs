@@ -1,13 +1,13 @@
-﻿using TodoList.Data;
+﻿using TodoList.DAL;
+using TodoList.DAL.Repository;
 using TodoList.Enums;
-using TodoList.Repository;
-using TodoList.Services;
+using TodoList.Service;
 
-namespace TodoList.Utils
+namespace TodoList.Factory
 {
-    public static class RepositorySetter
+    public static class RepositoryFactory // todo : переробити на Cookie
     {
-        public static ITaskRepository SetTaskRepository(IHttpContextAccessor httpContextAccessor, 
+        public static ITaskRepository GetTaskRepository(IHttpContextAccessor httpContextAccessor, 
             DapperContext dapperContext,
             XmlStorageService xmlStorageService)
         {
@@ -24,7 +24,7 @@ namespace TodoList.Utils
                 throw new Exception("Storage session was not found.");
             }
         }
-        public static ICategoryRepository SetCategoryRepository(IHttpContextAccessor httpContextAccessor, 
+        public static ICategoryRepository GetCategoryRepository(IHttpContextAccessor httpContextAccessor, 
             DapperContext dapperContext,
             XmlStorageService xmlStorageService)
         {

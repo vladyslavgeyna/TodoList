@@ -1,9 +1,9 @@
 ﻿using Dapper;
-using TodoList.Data;
-using TodoList.Models;
+using TodoList.Domain.Entity;
+using TodoList.Service.Utils;
 using Task = System.Threading.Tasks.Task;
 
-namespace TodoList.Repository
+namespace TodoList.DAL.Repository
 {
 	public class TaskMsSqlRepository : ITaskRepository
 	{
@@ -14,12 +14,12 @@ namespace TodoList.Repository
 			_context = context;
 		}
 
-        public async Task AddAsync(Models.Task task)
+        public async Task AddAsync(Domain.Entity.Task task)
 		{
 			string query = "INSERT INTO [dbo].[Tasks] (Description, DueDate, DateOfCreation, CategoryId) VALUES (@Description, @DueDate, @DateOfCreation, @CategoryId)";
 			using (var connection = _context.CreateConnection())
 			{
-				task.DateOfCreation = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+				task.DateOfCreation = DateTime.Parse(DateTime.Now.ToString(DateTimeHelper.DatePattern));
                 await connection.ExecuteAsync(query, task);
 			}
 		}
@@ -33,12 +33,12 @@ namespace TodoList.Repository
 			}
 		}
 
-		public async Task<IEnumerable<Models.Task>> GetAllAsync()
+		public async Task<IEnumerable<Domain.Entity.Task>> GetAllAsync()
 		{
 			string query = "SELECT * FROM [dbo].[Tasks] LEFT JOIN [dbo].[Categories] ON [dbo].[Tasks].CategoryId = [dbo].[Categories].Id";
 			using (var connection = _context.CreateConnection())
 			{
-				var tasks = await connection.QueryAsync<Models.Task, Category, Models.Task>(query, (task, category) =>
+				var tasks = await connection.QueryAsync<Domain.Entity.Task, Category, Domain.Entity.Task>(query, (task, category) =>
 				{
 					task.Category = category;
 					task.CategoryId = category.Id == 0 ? null : category.Id;
@@ -49,17 +49,17 @@ namespace TodoList.Repository
 			}
 		}
 
-		public async Task<Models.Task?> GetByIdAsync(int id)
+		public async Task<Domain.Entity.Task?> GetByIdAsync(int id)
 		{
 			string query = "SELECT * FROM [dbo].[Tasks] WHERE Id = @Id";
 			using (var connection = _context.CreateConnection())
 			{
-				var task = await connection.QueryFirstOrDefaultAsync<Models.Task>(query, new { Id = id });
+				var task = await connection.QueryFirstOrDefaultAsync<Domain.Entity.Task>(query, new { Id = id });
 				return task;
 			}
 		}
 
-		public async Task UpdateByIdAsync(int id, Models.Task newTask)
+		public async Task UpdateByIdAsync(int id, Domain.Entity.Task newTask)
 		{
 			string query = "UPDATE [dbo].[Tasks] SET Description = @Description, DueDate = @DueDate, IsCompleted = @IsCompleted, CategoryId = @CategoryId WHERE Id = @Id";
 			using (var connection = _context.CreateConnection())

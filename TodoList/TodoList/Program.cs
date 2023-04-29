@@ -1,7 +1,6 @@
-using TodoList.Data;
+using TodoList.DAL;
 using TodoList.Middlewares;
-using TodoList.Services;
-using TodoList.Utils;
+using TodoList.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSession();

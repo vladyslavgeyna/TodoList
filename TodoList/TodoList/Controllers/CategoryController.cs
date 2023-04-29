@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using TodoList.Data;
-using TodoList.Models;
-using TodoList.Repository;
-using TodoList.Services;
-using TodoList.Utils;
+using TodoList.Factory;
 using TodoList.ViewModels;
+using TodoList.DAL.Repository;
+using TodoList.Service;
+using TodoList.DAL;
+using TodoList.Domain.Entity;
 
 namespace TodoList.Controllers
 {
@@ -21,8 +21,8 @@ namespace TodoList.Controllers
             DapperContext dapperContext)
         {
             _mapper = mapper;
-            _taskRepository = RepositorySetter.SetTaskRepository(httpContextAccessor, dapperContext, xmlStorageService);
-            _categoryRepository = RepositorySetter.SetCategoryRepository(httpContextAccessor, dapperContext, xmlStorageService);
+            _taskRepository = RepositoryFactory.GetTaskRepository(httpContextAccessor, dapperContext, xmlStorageService);
+            _categoryRepository = RepositoryFactory.GetCategoryRepository(httpContextAccessor, dapperContext, xmlStorageService);
         }
 
         [HttpPost]
@@ -35,7 +35,7 @@ namespace TodoList.Controllers
                     { "Text", "Check out entered data." },
                     { "Class", "danger" },
                 };
-                var indexTaskViewModel = await IndexTaskViewModelCreator.CreateIndexTaskViewModel(_categoryRepository, _taskRepository);
+                var indexTaskViewModel = await IndexTaskViewModelFactory.CreateIndexTaskViewModel(_categoryRepository, _taskRepository);
                 indexTaskViewModel.CreateCategoryViewModel = createCategoryViewModel;
                 return View("~/Views/Task/Index.cshtml", indexTaskViewModel);
             }
