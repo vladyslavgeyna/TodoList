@@ -49,7 +49,7 @@ namespace TodoList.DAL.Repository
 			}
 		}
 
-		public async Task<Domain.Entity.Task?> GetByIdAsync(int id)
+        public async Task<Domain.Entity.Task?> GetByIdAsync(int id)
 		{
 			string query = "SELECT * FROM [dbo].[Tasks] WHERE Id = @Id";
 			using (var connection = _context.CreateConnection())

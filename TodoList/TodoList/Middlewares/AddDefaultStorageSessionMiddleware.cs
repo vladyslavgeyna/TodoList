@@ -4,11 +4,11 @@ using TodoList.Enums;
 
 namespace TodoList.Middlewares
 {
-    public class AddDefaultStorageCookieMiddleware
+    public class AddDefaultStorageSessionMiddleware
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly RequestDelegate _next;
-        public AddDefaultStorageCookieMiddleware(RequestDelegate next, IHttpContextAccessor httpContextAccessor)
+        public AddDefaultStorageSessionMiddleware(RequestDelegate next, IHttpContextAccessor httpContextAccessor)
         {
             _next = next;
             _httpContextAccessor = httpContextAccessor;

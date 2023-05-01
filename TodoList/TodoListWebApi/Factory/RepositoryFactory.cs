@@ -3,7 +3,7 @@ using TodoList.DAL.Repository;
 using TodoList.Enums;
 using TodoList.Service;
 
-namespace TodoList.Factory
+namespace TodoListWebApi.Factory
 {
     public static class RepositoryFactory
     {

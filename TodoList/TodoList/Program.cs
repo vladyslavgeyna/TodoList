@@ -19,7 +19,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseSession();
-app.UseMiddleware<AddDefaultStorageCookieMiddleware>();
+app.UseMiddleware<AddDefaultStorageSessionMiddleware>();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
