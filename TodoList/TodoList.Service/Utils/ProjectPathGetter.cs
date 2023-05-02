@@ -6,8 +6,7 @@ namespace TodoList.Service.Utils
     {
         public static string GetXmlStorageFilePath(IConfiguration configuration)
         {
-            //string? workingDirectory = (Directory.GetParent(Environment.CurrentDirectory)?.FullName) 
-            string? workingDirectory = Environment.CurrentDirectory
+            string? workingDirectory = (Directory.GetParent(Environment.CurrentDirectory)?.FullName) 
                 ?? throw new Exception("Unable to get working directory path.");
 
             var xmlStorageFilePath = configuration["XmlStorageFilePath"] 
