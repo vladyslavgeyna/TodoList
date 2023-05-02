@@ -1,4 +1,4 @@
-﻿namespace TodoListWebApi
+﻿namespace TodoListWebApi.GraphQLCore
 {
     public class Schema : GraphQL.Types.Schema
     {

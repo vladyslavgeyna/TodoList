@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TodoList.DAL;
 using TodoList.DAL.Repository;
+using TodoList.DAL.Repository.Factory;
 using TodoList.Factory;
 using TodoList.Service;
 using TodoList.ViewModels;
@@ -13,15 +14,18 @@ namespace TodoList.Controllers
         private readonly ITaskRepository _taskRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public TaskController(IMapper mapper,
             DapperContext dapperContext,
             IHttpContextAccessor httpContextAccessor,
-            XmlStorageService xmlStorageService)
+            XmlStorageService xmlStorageService,
+            IWebHostEnvironment webHostEnvironment)
         {
-            _taskRepository = RepositoryFactory.GetTaskRepository(httpContextAccessor, dapperContext, xmlStorageService);
-            _categoryRepository = RepositoryFactory.GetCategoryRepository(httpContextAccessor, dapperContext, xmlStorageService);
+            _taskRepository = RepositorySessionBasedFactory.GetTaskRepository(httpContextAccessor, dapperContext, xmlStorageService);
+            _categoryRepository = RepositorySessionBasedFactory.GetCategoryRepository(httpContextAccessor, dapperContext, xmlStorageService);
             _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpPost]

@@ -1,11 +1,11 @@
 ﻿using GraphQL.Types;
 using TodoList.DAL;
 using TodoList.DAL.Repository;
+using TodoList.DAL.Repository.Factory;
 using TodoList.Service;
-using TodoListWebApi.Factory;
 using TodoListWebApi.Types;
 
-namespace TodoListWebApi
+namespace TodoListWebApi.GraphQLCore
 {
     public class Query : ObjectGraphType
     {
@@ -14,10 +14,9 @@ namespace TodoListWebApi
             DapperContext dapperContext,
             XmlStorageService xmlStorageService)
         {
-            _taskRepository = RepositoryFactory.GetTaskRepository(httpContextAccessor, dapperContext, xmlStorageService);
-
+            _taskRepository = RepositorySessionBasedFactory.GetTaskRepository(httpContextAccessor, dapperContext, xmlStorageService);
             Field<ListGraphType<TaskType>>("tasks")
-                .ResolveAsync(async context => 
+                .ResolveAsync(async context =>
                     await _taskRepository.GetAllAsync());
         }
     }

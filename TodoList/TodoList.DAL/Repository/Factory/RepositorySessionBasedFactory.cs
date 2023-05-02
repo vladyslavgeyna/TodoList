@@ -1,13 +1,12 @@
-﻿using TodoList.DAL;
-using TodoList.DAL.Repository;
-using TodoList.Enums;
+﻿using TodoList.Enums;
 using TodoList.Service;
+using Microsoft.AspNetCore.Http;
 
-namespace TodoList.Factory
+namespace TodoList.DAL.Repository.Factory
 {
-    public static class RepositoryFactory
+    public static class RepositorySessionBasedFactory
     {
-        public static ITaskRepository GetTaskRepository(IHttpContextAccessor httpContextAccessor, 
+        public static ITaskRepository GetTaskRepository(IHttpContextAccessor httpContextAccessor,
             DapperContext dapperContext,
             XmlStorageService xmlStorageService)
         {
@@ -24,7 +23,7 @@ namespace TodoList.Factory
                 throw new Exception("Storage session was not found.");
             }
         }
-        public static ICategoryRepository GetCategoryRepository(IHttpContextAccessor httpContextAccessor, 
+        public static ICategoryRepository GetCategoryRepository(IHttpContextAccessor httpContextAccessor,
             DapperContext dapperContext,
             XmlStorageService xmlStorageService)
         {

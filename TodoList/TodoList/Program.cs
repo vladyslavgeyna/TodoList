@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Hosting;
 using TodoList.DAL;
-using TodoList.Middlewares;
 using TodoList.Service;
+using TodoList.Service.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSession();

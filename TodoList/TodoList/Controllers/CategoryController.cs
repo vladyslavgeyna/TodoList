@@ -6,6 +6,7 @@ using TodoList.DAL.Repository;
 using TodoList.Service;
 using TodoList.DAL;
 using TodoList.Domain.Entity;
+using TodoList.DAL.Repository.Factory;
 
 namespace TodoList.Controllers
 {
@@ -21,8 +22,8 @@ namespace TodoList.Controllers
             DapperContext dapperContext)
         {
             _mapper = mapper;
-            _taskRepository = RepositoryFactory.GetTaskRepository(httpContextAccessor, dapperContext, xmlStorageService);
-            _categoryRepository = RepositoryFactory.GetCategoryRepository(httpContextAccessor, dapperContext, xmlStorageService);
+            _taskRepository = RepositorySessionBasedFactory.GetTaskRepository(httpContextAccessor, dapperContext, xmlStorageService);
+            _categoryRepository = RepositorySessionBasedFactory.GetCategoryRepository(httpContextAccessor, dapperContext, xmlStorageService);
         }
 
         [HttpPost]
