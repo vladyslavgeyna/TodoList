@@ -1,17 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TodoList.Service.Utils;
 using TodoList.ViewModels;
 
 namespace TodoList.Controllers
 {
     public class StorageController : Controller
     {
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public StorageController(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
-
         [HttpPost]
         public IActionResult Change(ChangeStorageViewModel changeStorageViewModel)
         {
@@ -19,10 +13,10 @@ namespace TodoList.Controllers
             {
                 return RedirectToAction("Index", "Task");
             }
-            var a = _httpContextAccessor.HttpContext?.Session.GetString("Storage");
-            _httpContextAccessor.HttpContext?.Session.Remove("Storage");
-            _httpContextAccessor.HttpContext?.Session.SetString("Storage", changeStorageViewModel.StorageType.ToString());
-            var b = _httpContextAccessor.HttpContext?.Session.GetString("Storage");
+            //var a = _httpContextAccessor.HttpContext?.Session.GetString("Storage");
+            HttpContext.Response.Cookies.Delete(StorageCookieHelper.CookieName);
+            HttpContext.Response.Cookies.Append(StorageCookieHelper.CookieName, changeStorageViewModel.StorageType.ToString());
+            //var b = _httpContextAccessor.HttpContext?.Session.GetString("Storage");
             return RedirectToAction("Index", "Task");
         }
     }

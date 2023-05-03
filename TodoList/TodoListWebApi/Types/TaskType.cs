@@ -13,7 +13,7 @@ namespace TodoListWebApi.Types
             Field(t => t.DateOfCreation, nullable: false, type: typeof(DateTimeGraphType)).Description("The date when task was created.");
             Field(t => t.IsCompleted, nullable: false, type: typeof(BooleanGraphType)).Description("Indicates if the task is completed.");
             Field(t => t.CategoryId, nullable: true, type: typeof(IntGraphType)).Description("The id of category which task belongs to (if that category exist).");
-           // Field(t => t.Category, nullable: true, type: typeof(ObjectGraphType<CategoryType>)).Description("The category which task belongs to (if that category exist).");
+            Field(t => t.Category, nullable: true, type: typeof(CategoryType)).Description("The category which task belongs to (if that category exist).");
         }
     }
 }

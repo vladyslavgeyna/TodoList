@@ -1,10 +1,8 @@
-using Microsoft.AspNetCore.Hosting;
 using TodoList.DAL;
 using TodoList.Service;
-using TodoList.Service.Middleware;
+using TodoListMVC.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddScoped<XmlStorageService>();
@@ -19,8 +17,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseSession();
-app.UseMiddleware<AddDefaultStorageSessionMiddleware>();
+app.UseDefaultCookieStorage();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

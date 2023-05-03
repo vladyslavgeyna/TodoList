@@ -17,13 +17,13 @@ namespace TodoList.Controllers
         private readonly IMapper _mapper;
 
         public CategoryController(IMapper mapper,
-            IHttpContextAccessor httpContextAccessor,
             XmlStorageService xmlStorageService,
-            DapperContext dapperContext)
+            DapperContext dapperContext,
+            IHttpContextAccessor httpContextAccessor)
         {
             _mapper = mapper;
-            _taskRepository = RepositorySessionBasedFactory.GetTaskRepository(httpContextAccessor, dapperContext, xmlStorageService);
-            _categoryRepository = RepositorySessionBasedFactory.GetCategoryRepository(httpContextAccessor, dapperContext, xmlStorageService);
+            _taskRepository = RepositoryCookieBasedFactory.GetTaskRepository(httpContextAccessor?.HttpContext, dapperContext, xmlStorageService);
+            _categoryRepository = RepositoryCookieBasedFactory.GetCategoryRepository(httpContextAccessor?.HttpContext, dapperContext, xmlStorageService);
         }
 
         [HttpPost]

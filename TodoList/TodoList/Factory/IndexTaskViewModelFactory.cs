@@ -9,7 +9,6 @@ namespace TodoList.Factory
         {
             var categories = (await categoryRepository.GetAllAsync()).ToList();
             var tasks = (await taskRepository.GetAllAsync()).ToList();
-            //tasks.ForEach(task => task.Category = categories.FirstOrDefault(category => category.Id == task.CategoryId));
             var indexTaskViewModel = new IndexTaskViewModel
             {
                 Categories = categories,

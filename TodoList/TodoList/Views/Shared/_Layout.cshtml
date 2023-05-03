@@ -1,7 +1,9 @@
 ﻿@using TodoList.Enums;
+@using TodoList.Service.Utils;
 @inject IHttpContextAccessor httpContextAccessor
 @{
-    var sessionStorageValue = httpContextAccessor?.HttpContext?.Session.GetString("Storage");
+    var sessionStorageValue = string.Empty;
+    httpContextAccessor?.HttpContext?.Request.Cookies.TryGetValue(StorageCookieHelper.CookieName, out sessionStorageValue);
     var changeStorageViewModel = new ChangeStorageViewModel();
 }
 <!DOCTYPE html>

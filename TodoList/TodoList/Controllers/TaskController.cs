@@ -14,18 +14,15 @@ namespace TodoList.Controllers
         private readonly ITaskRepository _taskRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IMapper _mapper;
-        private readonly IWebHostEnvironment _webHostEnvironment;
 
         public TaskController(IMapper mapper,
             DapperContext dapperContext,
-            IHttpContextAccessor httpContextAccessor,
             XmlStorageService xmlStorageService,
-            IWebHostEnvironment webHostEnvironment)
+            IHttpContextAccessor httpContextAccessor)
         {
-            _taskRepository = RepositorySessionBasedFactory.GetTaskRepository(httpContextAccessor, dapperContext, xmlStorageService);
-            _categoryRepository = RepositorySessionBasedFactory.GetCategoryRepository(httpContextAccessor, dapperContext, xmlStorageService);
+            _taskRepository = RepositoryCookieBasedFactory.GetTaskRepository(httpContextAccessor?.HttpContext, dapperContext, xmlStorageService);
+            _categoryRepository = RepositoryCookieBasedFactory.GetCategoryRepository(httpContextAccessor?.HttpContext, dapperContext, xmlStorageService);
             _mapper = mapper;
-            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpPost]
