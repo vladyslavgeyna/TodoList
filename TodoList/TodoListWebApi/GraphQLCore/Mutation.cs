@@ -12,12 +12,12 @@ namespace TodoListWebApi.GraphQLCore
     {
         private readonly ITaskRepository _taskRepository;
         private readonly ICategoryRepository _categoryRepository;
-        public Mutation(IHttpContextAccessor httpContextAccessor,
-            DapperContext dapperContext,
-            XmlStorageService xmlStorageService)
+        public Mutation(DapperContext dapperContext,
+            XmlStorageService xmlStorageService,
+            CookieStorageTypeService cookieStorageTypeService)
         {
-            _taskRepository = RepositoryCookieBasedFactory.GetTaskRepository(httpContextAccessor?.HttpContext, dapperContext, xmlStorageService);
-            _categoryRepository = RepositoryCookieBasedFactory.GetCategoryRepository(httpContextAccessor?.HttpContext, dapperContext, xmlStorageService);
+            _taskRepository = RepositoryCookieBasedFactory.GetTaskRepository(cookieStorageTypeService, dapperContext, xmlStorageService);
+            _categoryRepository = RepositoryCookieBasedFactory.GetCategoryRepository(cookieStorageTypeService, dapperContext, xmlStorageService);
 
             Field<TaskType>("createTask")
                 .Argument<NonNullGraphType<TaskInputType>>("task")

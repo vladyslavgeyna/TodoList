@@ -19,11 +19,11 @@ namespace TodoList.Controllers
         public CategoryController(IMapper mapper,
             XmlStorageService xmlStorageService,
             DapperContext dapperContext,
-            IHttpContextAccessor httpContextAccessor)
+            CookieStorageTypeService cookieStorageTypeService)
         {
             _mapper = mapper;
-            _taskRepository = RepositoryCookieBasedFactory.GetTaskRepository(httpContextAccessor?.HttpContext, dapperContext, xmlStorageService);
-            _categoryRepository = RepositoryCookieBasedFactory.GetCategoryRepository(httpContextAccessor?.HttpContext, dapperContext, xmlStorageService);
+            _taskRepository = RepositoryCookieBasedFactory.GetTaskRepository(cookieStorageTypeService, dapperContext, xmlStorageService);
+            _categoryRepository = RepositoryCookieBasedFactory.GetCategoryRepository(cookieStorageTypeService, dapperContext, xmlStorageService);
         }
 
         [HttpPost]

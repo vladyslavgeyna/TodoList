@@ -13,10 +13,8 @@ namespace TodoList.Controllers
             {
                 return RedirectToAction("Index", "Task");
             }
-            //var a = _httpContextAccessor.HttpContext?.Session.GetString("Storage");
             HttpContext.Response.Cookies.Delete(StorageCookieHelper.CookieName);
             HttpContext.Response.Cookies.Append(StorageCookieHelper.CookieName, changeStorageViewModel.StorageType.ToString());
-            //var b = _httpContextAccessor.HttpContext?.Session.GetString("Storage");
             return RedirectToAction("Index", "Task");
         }
     }

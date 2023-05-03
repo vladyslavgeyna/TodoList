@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client.Extensions.Msal;
 using TodoList.DAL;
 using TodoList.DAL.Repository;
 using TodoList.DAL.Repository.Factory;
+using TodoList.Enums;
 using TodoList.Factory;
 using TodoList.Service;
 using TodoList.ViewModels;
@@ -18,10 +20,10 @@ namespace TodoList.Controllers
         public TaskController(IMapper mapper,
             DapperContext dapperContext,
             XmlStorageService xmlStorageService,
-            IHttpContextAccessor httpContextAccessor)
+            CookieStorageTypeService cookieStorageTypeService)
         {
-            _taskRepository = RepositoryCookieBasedFactory.GetTaskRepository(httpContextAccessor?.HttpContext, dapperContext, xmlStorageService);
-            _categoryRepository = RepositoryCookieBasedFactory.GetCategoryRepository(httpContextAccessor?.HttpContext, dapperContext, xmlStorageService);
+            _taskRepository = RepositoryCookieBasedFactory.GetTaskRepository(cookieStorageTypeService, dapperContext, xmlStorageService);
+            _categoryRepository = RepositoryCookieBasedFactory.GetCategoryRepository(cookieStorageTypeService, dapperContext, xmlStorageService);
             _mapper = mapper;
         }
 

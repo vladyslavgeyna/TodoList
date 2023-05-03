@@ -1,21 +1,15 @@
 using GraphQL;
 using TodoList.DAL;
 using TodoList.Service;
-using TodoList.Service.Middleware;
 using TodoListWebApi.GraphQLCore;
+using TodoList.Service.Middleware.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSession();
-
-builder.Services.AddDistributedMemoryCache();
-
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddScoped<CookieStorageTypeService>();
 builder.Services.AddSingleton<DapperContext>();
-
 builder.Services.AddSingleton<XmlStorageService>();
-
 builder.Services.AddGraphQL(builder => builder
     .AddSystemTextJson()
     .AddSchema<Schema>()
@@ -23,12 +17,7 @@ builder.Services.AddGraphQL(builder => builder
 
 var app = builder.Build();
 
-app.UseSession();
-
-app.UseMiddleware<AddDefaultStorageSessionMiddleware>();
-
+app.UseDefaultCookieStorage();
 app.UseGraphQL<Schema>();
-
 app.UseGraphQLAltair();
-
 app.Run();

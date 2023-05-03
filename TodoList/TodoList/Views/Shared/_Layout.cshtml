@@ -1,9 +1,15 @@
 ﻿@using TodoList.Enums;
 @using TodoList.Service.Utils;
+@using TodoList.Service;
 @inject IHttpContextAccessor httpContextAccessor
+@inject CookieStorageTypeService cookieStorageTypeService
 @{
-    var sessionStorageValue = string.Empty;
-    httpContextAccessor?.HttpContext?.Request.Cookies.TryGetValue(StorageCookieHelper.CookieName, out sessionStorageValue);
+    var cookieStorageValue = string.Empty;
+    httpContextAccessor?.HttpContext?.Request.Cookies.TryGetValue(StorageCookieHelper.CookieName, out cookieStorageValue);
+    if (cookieStorageValue is null)
+    {
+        cookieStorageValue = cookieStorageTypeService.Storage.ToString();
+    }
     var changeStorageViewModel = new ChangeStorageViewModel();
 }
 <!DOCTYPE html>
@@ -33,7 +39,7 @@
                             <select asp-for="@changeStorageViewModel.StorageType" class="form-control border-radius-20 pointer fw-bold ms-2">
                                 @foreach (var item in Enum.GetNames(typeof(Storage)))
                                 {
-                                    @if (sessionStorageValue == item)
+                                    @if (cookieStorageValue == item)
                                     {
                                         <option value="@item" selected>@item</option>
                                     }

@@ -1,56 +1,42 @@
 ﻿using TodoList.Enums;
 using TodoList.Service;
-using Microsoft.AspNetCore.Http;
-using TodoList.Service.Utils;
 
 namespace TodoList.DAL.Repository.Factory
 {
     public static class RepositoryCookieBasedFactory
     {
-        public static ITaskRepository GetTaskRepository(HttpContext? httpContext,
+        public static ITaskRepository GetTaskRepository(CookieStorageTypeService cookieStorageTypeService,
             DapperContext dapperContext,
             XmlStorageService xmlStorageService)
         {
-            if (httpContext is null)
-            {
-                throw new ArgumentNullException(nameof(httpContext));
-            }
-            var storageCookieValue = string.Empty;
-            httpContext?.Request.Cookies.TryGetValue(StorageCookieHelper.CookieName, out storageCookieValue);
-            if (storageCookieValue == Storage.Xml.ToString())
+            if (cookieStorageTypeService.Storage.ToString() == Storage.Xml.ToString())
             {
                 return new TaskXmlRepository(xmlStorageService);
             }
-            else if (storageCookieValue == Storage.MsSql.ToString())
+            else if (cookieStorageTypeService.Storage.ToString() == Storage.MsSql.ToString())
             {
                 return new TaskMsSqlRepository(dapperContext);
             }
             else
             {
-                throw new Exception("Storage cookie was not found.");
+                throw new Exception("Error while recognizing storage type.");
             }
         }
-        public static ICategoryRepository GetCategoryRepository(HttpContext? httpContext,
+        public static ICategoryRepository GetCategoryRepository(CookieStorageTypeService cookieStorageTypeService,
             DapperContext dapperContext,
             XmlStorageService xmlStorageService)
         {
-            if (httpContext is null)
-            {
-                throw new ArgumentNullException(nameof(httpContext));
-            }
-            var storageCookieValue = string.Empty;
-            httpContext?.Request.Cookies.TryGetValue(StorageCookieHelper.CookieName, out storageCookieValue);
-            if (storageCookieValue == Storage.Xml.ToString())
+            if (cookieStorageTypeService.Storage.ToString() == Storage.Xml.ToString())
             {
                 return new CategoryXmlRepository(xmlStorageService);
             }
-            else if (storageCookieValue == Storage.MsSql.ToString())
+            else if (cookieStorageTypeService.Storage.ToString() == Storage.MsSql.ToString())
             {
                 return new CategoryMsSqlRepository(dapperContext);
             }
             else
             {
-                throw new Exception("Storage cookie was not found.");
+                throw new Exception("Error while recognizing storage type.");
             }
         }
     }

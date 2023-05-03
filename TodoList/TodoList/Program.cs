@@ -1,9 +1,10 @@
 using TodoList.DAL;
 using TodoList.Service;
-using TodoListMVC.Extensions;
+using TodoList.Service.Middleware.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<CookieStorageTypeService>();
 builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddScoped<XmlStorageService>();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
