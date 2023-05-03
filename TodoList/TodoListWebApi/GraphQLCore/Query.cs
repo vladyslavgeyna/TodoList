@@ -22,7 +22,6 @@ namespace TodoListWebApi.GraphQLCore
                 .ResolveAsync(async context => await _taskRepository.GetAllAsync());
 
 
-
         }
     }
 }
